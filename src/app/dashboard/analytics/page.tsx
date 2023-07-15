@@ -5,11 +5,11 @@ import NewUsers from "@/04-widgets/new-users"
 export default async function Page() {
   let countUsersByMonth = {}
 
-  // try {
-  //   countUsersByMonth = await getCountUsersByMonth()
-  // } catch (error: any) {
-  //   console.log(error)
-  // }
+  try {
+    countUsersByMonth = await getCountUsersByMonth()
+  } catch (error: any) {
+    console.log(error)
+  }
 
   return (
     <div className="space-y-4">

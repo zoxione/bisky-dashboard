@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { Alert, AlertDescription, AlertTitle } from "@/01-shared/ui/alert"
-import { AlertCircle } from "lucide-react"
+import { AlertCircle, Loader2 } from "lucide-react"
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -32,6 +32,7 @@ const formSchema = z.object({
 const AuthForm = () => {
   const router = useRouter()
   const [isError, setIsError] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,11 +43,15 @@ const AuthForm = () => {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true)
+
     const res = await signIn("credentials", {
       username: values.username,
       password: values.password,
       redirect: false,
     })
+
+    setIsLoading(false)
 
     if (res && !res.error) {
       router.push("/")
@@ -100,7 +105,8 @@ const AuthForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Login
           </Button>
         </form>

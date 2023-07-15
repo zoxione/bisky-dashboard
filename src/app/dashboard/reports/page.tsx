@@ -5,12 +5,45 @@ import {
   CardHeader,
   CardTitle,
 } from "@/01-shared/ui/card"
-import RecentSales from "@/04-widgets/recent-sales"
+import ReportsList from "@/04-widgets/reports-list"
 
 export default async function Page() {
+  const data = [
+    {
+      id: 1,
+      from: "dadada",
+      to: "dsada",
+      message: "dsada",
+    },
+    {
+      id: 2,
+      from: "dadada",
+      to: "dsada",
+      message: "dsada",
+    },
+    {
+      id: 3,
+      from: "dadada",
+      to: "dsada",
+      message: "dsada",
+    },
+    {
+      id: 4,
+      from: "dadada",
+      to: "dsada",
+      message: "dsaddsadadsadadsadadsadadsadadsadaa",
+    },
+    {
+      id: 5,
+      from: "dadada",
+      to: "dsada",
+      message: "dsada",
+    },
+  ]
+
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -106,15 +139,15 @@ export default async function Page() {
             </p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-3">
           <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>You made 265 sales this month.</CardDescription>
+            <CardTitle>Reports</CardTitle>
+            <CardDescription>Total amount: {data.length}</CardDescription>
           </CardHeader>
           <CardContent>
-            <RecentSales />
+            <ReportsList data={data} />
           </CardContent>
         </Card>
       </div>

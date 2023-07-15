@@ -33,21 +33,15 @@ const Sidebar = ({ className }: ISidebarProps) => {
     },
     {
       id: 2,
-      title: "Charts",
-      path: "/dashboard/charts",
-      icon: BarChartIcon,
+      title: "Analytics",
+      path: "/dashboard/analytics",
+      icon: LineChartIcon,
     },
     {
       id: 3,
       title: "Reports",
       path: "/dashboard/reports",
       icon: FlagTriangleRightIcon,
-    },
-    {
-      id: 4,
-      title: "Analytics",
-      path: "/dashboard/analytics",
-      icon: LineChartIcon,
     },
   ]
 
