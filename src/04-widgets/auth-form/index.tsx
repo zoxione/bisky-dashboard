@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { Alert, AlertDescription, AlertTitle } from "@/01-shared/ui/alert"
 import { AlertCircle, Loader2 } from "lucide-react"
+import { useToast } from "@/01-shared/ui/use-toast"
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -30,8 +31,8 @@ const formSchema = z.object({
 })
 
 const AuthForm = () => {
+  const { toast } = useToast()
   const router = useRouter()
-  const [isError, setIsError] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -55,30 +56,26 @@ const AuthForm = () => {
 
     if (res && !res.error) {
       router.push("/")
+      toast({
+        variant: "default",
+        title: "Welcome back",
+        description: `Hello ${values.username}, you have successfully logged in.`,
+      })
     } else {
-      setIsError(true)
       console.log(res)
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong",
+        description:
+          "Incorrect data entered or an error occurred on the server.",
+      })
     }
   }
 
   return (
     <>
-      {isError && (
-        <Alert variant="destructive" className=" w-full">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            Incorrect data entered or an error occurred on the server.
-          </AlertDescription>
-        </Alert>
-      )}
-
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          onChange={() => setIsError(false)}
-          className="space-y-4"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="username"

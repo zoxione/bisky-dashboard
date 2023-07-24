@@ -17,10 +17,20 @@ import {
 } from "@/01-shared/ui/menubar"
 import { Separator } from "@/01-shared/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/01-shared/ui/avatar"
+import { toast } from "@/01-shared/ui/use-toast"
 
 const Header = () => {
   const session = useSession()
   // console.log(session)
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/" })
+    toast({
+      variant: "default",
+      title: "Logged out",
+      description: "You have successfully logged out. See you next time!",
+    })
+  }
 
   return (
     <>
@@ -49,10 +59,7 @@ const Header = () => {
                   <ToggleTheme />
                 </MenubarItem>
                 <MenubarSeparator />
-                <MenubarItem
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className="text-red-600"
-                >
+                <MenubarItem onClick={handleSignOut} className="text-red-600">
                   Sign out
                 </MenubarItem>
               </MenubarContent>

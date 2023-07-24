@@ -1,4 +1,5 @@
 import { cn } from "@/01-shared/libs/shadcn"
+import { Toaster } from "@/01-shared/ui/toaster"
 import Providers from "@/07-core/providers"
 import "@/07-core/styles/globals.css"
 import type { Metadata } from "next"
@@ -16,7 +17,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="flex min-h-full" suppressHydrationWarning={true}>
       <body className={cn(inter.className, "flex flex-col flex-auto m-0 p-0")}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   )
