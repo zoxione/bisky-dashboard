@@ -1,18 +1,3 @@
-// export interface IYear {
-//   Jan: number
-//   Feb: number
-//   Mar: number
-//   Apr: number
-//   May: number
-//   Jun: number
-//   Jul: number
-//   Aug: number
-//   Sep: number
-//   Oct: number
-//   Nov: number
-//   Dec: number
-// }
-
 export interface IMonth {
   month: string
   count: number
@@ -82,45 +67,6 @@ const calculateUsersByMonth = (users: any[]) => {
     }
 
     currentYear[month].count += 1
-
-    // switch (month) {
-    //   case 0:
-
-    //     break
-    //   case 1:
-    //     current["Feb"] += 1
-    //     break
-    //   case 2:
-    //     current["Mar"] += 1
-    //     break
-    //   case 3:
-    //     current["Apr"] += 1
-    //     break
-    //   case 4:
-    //     current["May"] += 1
-    //     break
-    //   case 5:
-    //     current["Jun"] += 1
-    //     break
-    //   case 6:
-    //     current["Jul"] += 1
-    //     break
-    //   case 7:
-    //     current["Aug"] += 1
-    //     break
-    //   case 8:
-    //     current["Sep"] += 1
-    //     break
-    //   case 9:
-    //     current["Oct"] += 1
-    //     break
-    //   case 10:
-    //     current["Nov"] += 1
-    //     break
-    //   case 11:
-    //     current["Dec"] += 1
-    //     break
-    // }
 
     res[year] = currentYear
   }

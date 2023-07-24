@@ -8,7 +8,7 @@ export const getUsers = async () => {
     .collection<IUser>("Users")
     .find({})
     // .skip(3)
-    .limit(100)
+    .limit(1000)
     .toArray()
 
   return data

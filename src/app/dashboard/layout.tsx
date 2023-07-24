@@ -8,10 +8,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <>
       <Header />
 
-      <main className="grid lg:grid-cols-5 h-full">
+      <main className="grid grid-cols-1 lg:grid-cols-5 h-full">
         <Sidebar />
         <BottomNavigation />
-        <section className="col-span-3 lg:col-span-4 p-4">{children}</section>
+        <section className="col-span-3 lg:col-span-4 p-4 pb-[81px]">
+          {children}
+        </section>
       </main>
     </>
   )

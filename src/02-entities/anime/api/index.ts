@@ -8,7 +8,7 @@ export const getAllAnime = async () => {
     .collection<IAnimeInfo>("AnimeInfo")
     .find({})
     // .skip(3)
-    .limit(100)
+    .limit(5000)
     .toArray()
 
   return data

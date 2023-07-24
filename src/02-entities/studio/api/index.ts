@@ -8,7 +8,7 @@ export const getStudios = async () => {
     .collection<IStudio>("Studios")
     .find({})
     // .skip(3)
-    .limit(100)
+    .limit(1000)
     .toArray()
 
   return data

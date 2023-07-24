@@ -5,21 +5,13 @@ import SortButton from "@/03-features/sort-button/ui"
 import { ColumnDef } from "@tanstack/react-table"
 import dayjs from "dayjs"
 
-export const columns: ColumnDef<Omit<IAnimeInfo, "_id" | "franchise">>[] = [
+export const columns: ColumnDef<
+  Omit<IAnimeInfo, "_id" | "franchise"> | "label"
+>[] = [
   {
-    accessorKey: "labels",
+    accessorKey: "label",
     header: ({ column }) => {
       return <SortButton column={column} label="Label" />
-    },
-    cell: ({ row }) => {
-      const labels: string[] = row.getValue("labels")
-      let label = ""
-      if (labels[0] !== "") {
-        label = labels[0]
-      } else if (labels[1] !== "") {
-        label = labels[1]
-      }
-      return label
     },
   },
   {

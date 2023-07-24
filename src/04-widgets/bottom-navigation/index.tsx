@@ -86,9 +86,8 @@ const BottomNavigation = () => {
 
   return (
     <>
-      <div className="w-full bg-black fixed bottom-0 block lg:hidden pb-3">
+      <div className="w-full bg-white dark:bg-neutral-950 fixed bottom-0 block lg:hidden pb-3">
         <Separator className="mb-3" />
-
         <Menubar className="border-0 justify-evenly w-full h-fit p-0">
           <MenubarMenu>
             <MenubarTrigger className="flex flex-col justify-center items-center gap-1 w-fit">

@@ -24,6 +24,15 @@ import { Button } from "./button"
 import { useState } from "react"
 import { Input } from "./input"
 import { CaretLeftIcon, CaretRightIcon } from "@radix-ui/react-icons"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./select"
 
 interface IDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -121,23 +130,65 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <CaretLeftIcon className="w-4 h-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <CaretRightIcon className="w-4 h-4" />
-        </Button>
+
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 py-4">
+        <span className="">Count items: {data.length}</span>
+
+        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-1">
+            <span>Page (0-{table.getPageCount()}):</span>
+            <Input
+              className="w-[70px]"
+              type="number"
+              min={0}
+              max={table.getPageCount()}
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-1">
+            <Select
+              value={table.getState().pagination.pageSize.toString()}
+              onValueChange={(value: string) => {
+                table.setPageSize(Number(value))
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a fruit" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                    <SelectItem key={pageSize} value={pageSize.toString()}>
+                      Show {pageSize}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <CaretLeftIcon className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <CaretRightIcon className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   )

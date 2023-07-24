@@ -14,8 +14,6 @@ export default async function Page() {
         </Badge>
       </h3>
       <UsersTable />
-
-      <span className="">Count rows: {data.length}</span>
     </>
   )
 }

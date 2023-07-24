@@ -14,8 +14,6 @@ export default async function Page() {
         </Badge>
       </h3>
       <GenresTable />
-
-      <span className="">Count rows: {data.length}</span>
     </>
   )
 }

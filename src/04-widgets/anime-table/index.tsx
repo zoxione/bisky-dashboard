@@ -7,16 +7,16 @@ const AnimeTable = async () => {
 
   let editData = data.map((obj) => {
     const { _id, franchise, ...newObj } = obj
-    const labels = obj.labels
-    if (labels[0] !== "") {
-      newObj.poster = labels[0]
-    } else if (labels[1] !== "") {
-      newObj.poster = labels[1]
+    let label = ""
+    if (newObj.labels[0] !== "") {
+      label = newObj.labels[0]
+    } else if (newObj.labels[1] !== "") {
+      label = newObj.labels[1]
     }
-    return newObj
+    return { label, ...newObj }
   })
 
-  return <DataTable columns={columns} data={editData} columnFilter="" />
+  return <DataTable columns={columns} data={editData} columnFilter="label" />
 }
 
 export default AnimeTable
