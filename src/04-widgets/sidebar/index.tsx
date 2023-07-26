@@ -1,8 +1,5 @@
 "use client"
 
-import { cn } from "@/01-shared/libs/shadcn"
-import { Button } from "@/01-shared/ui/button"
-import { Separator } from "@/01-shared/ui/separator"
 import {
   BackpackIcon,
   BarChartIcon,
@@ -18,6 +15,10 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+
+import { Separator } from "@/01-shared/ui/separator"
+import { Button } from "@/01-shared/ui/button"
+import { cn } from "@/01-shared/libs/shadcn"
 
 interface ISidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -81,7 +82,10 @@ const Sidebar = ({ className }: ISidebarProps) => {
   return (
     <>
       <aside
-        className={cn("hidden lg:flex flex-row justify-between", className)}
+        className={cn(
+          "hidden lg:flex sticky top-[69px] h-[calc(100vh-69px)] box-border overflow-y-auto flex-row justify-between",
+          className,
+        )}
       >
         <div className="flex flex-col justify-between items-center px-3 py-4">
           <div className="space-y-4">
@@ -126,7 +130,7 @@ const Sidebar = ({ className }: ISidebarProps) => {
               </div>
             </div>
           </div>
-          <div className="px-4 text-center">
+          <div className="p-4 text-center">
             Created by{" "}
             <a
               href="https://github.com/zoxione"
@@ -135,7 +139,7 @@ const Sidebar = ({ className }: ISidebarProps) => {
             >
               zoxione
             </a>
-            , 2023
+            , {new Date().getFullYear()}
           </div>
         </div>
         <Separator orientation="vertical" />

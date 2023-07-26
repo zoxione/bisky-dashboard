@@ -1,9 +1,10 @@
 "use client"
 
-import { IAnimeInfo } from "@/02-entities/anime"
-import SortButton from "@/03-features/sort-button/ui"
 import { ColumnDef } from "@tanstack/react-table"
 import dayjs from "dayjs"
+
+import { IAnimeInfo } from "@/02-entities/anime"
+import SortButton from "@/03-features/sort-button/ui"
 
 export const columns: ColumnDef<
   Omit<IAnimeInfo, "_id" | "franchise"> | "label"

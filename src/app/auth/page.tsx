@@ -6,7 +6,9 @@ import {
   CardTitle,
 } from "@/01-shared/ui/card"
 import AuthForm from "@/04-widgets/auth-form"
+
 import Image from "next/image"
+
 import Logo from "/public/favicon-64x64.png"
 
 export default function AuthPage() {

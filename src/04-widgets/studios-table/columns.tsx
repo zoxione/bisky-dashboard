@@ -1,10 +1,11 @@
 "use client"
 
+import { ColumnDef } from "@tanstack/react-table"
+import dayjs from "dayjs"
+
 import { IAnimeInfo } from "@/02-entities/anime"
 import { IStudio } from "@/02-entities/studio"
 import SortButton from "@/03-features/sort-button/ui"
-import { ColumnDef } from "@tanstack/react-table"
-import dayjs from "dayjs"
 
 export const columns: ColumnDef<Omit<IStudio, "_id">>[] = [
   {

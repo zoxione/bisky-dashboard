@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+
 import { IStudio } from "../models"
 
 export const getStudios = async () => {

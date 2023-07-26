@@ -2,8 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { useState } from "react"
+import { AlertCircle, Loader2 } from "lucide-react"
 
-import { Button } from "@/01-shared/ui/button"
+import { Alert, AlertDescription, AlertTitle } from "@/01-shared/ui/alert"
+import { Input } from "@/01-shared/ui/input"
 import {
   Form,
   FormControl,
@@ -12,13 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/01-shared/ui/form"
-import { Input } from "@/01-shared/ui/input"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
-import { useState } from "react"
-import { Alert, AlertDescription, AlertTitle } from "@/01-shared/ui/alert"
-import { AlertCircle, Loader2 } from "lucide-react"
+import { Button } from "@/01-shared/ui/button"
 import { useToast } from "@/01-shared/ui/use-toast"
 
 const formSchema = z.object({

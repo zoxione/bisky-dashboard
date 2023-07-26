@@ -1,5 +1,6 @@
 import { DataTable } from "@/01-shared/ui/data-table"
 import { getAllAnime } from "@/02-entities/anime/api"
+
 import { columns } from "./columns"
 
 const AnimeTable = async () => {

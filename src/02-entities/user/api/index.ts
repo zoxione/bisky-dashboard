@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+
 import { IUser } from "../models"
 
 export const getUsers = async () => {
@@ -27,4 +28,21 @@ export const getCountUsersByMonth = async () => {
   }
 
   return res.json()
+}
+
+export const getCountUserRoles = async () => {
+  const res = await fetch(`${process.env.APP_URL}/api/charts/user-roles`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+
+  if (!res.ok) {
+    return { data: null, error: true }
+  }
+
+  const data = await res.json()
+
+  return { data: data, error: false }
 }

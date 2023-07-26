@@ -1,5 +1,17 @@
 "use client"
 
+import { InfoCircledIcon, PersonIcon } from "@radix-ui/react-icons"
+import {
+  BackpackIcon,
+  FlagTriangleRightIcon,
+  HomeIcon,
+  LineChartIcon,
+  TableIcon,
+  VenetianMaskIcon,
+  VideoIcon,
+} from "lucide-react"
+import Link from "next/link"
+
 import {
   Menubar,
   MenubarContent,
@@ -17,17 +29,6 @@ import {
   NavigationMenuTrigger,
 } from "@/01-shared/ui/navigation-menu"
 import { Separator } from "@/01-shared/ui/separator"
-import { InfoCircledIcon, PersonIcon } from "@radix-ui/react-icons"
-import {
-  BackpackIcon,
-  FlagTriangleRightIcon,
-  HomeIcon,
-  LineChartIcon,
-  TableIcon,
-  VenetianMaskIcon,
-  VideoIcon,
-} from "lucide-react"
-import Link from "next/link"
 
 const BottomNavigation = () => {
   const generalList = [
@@ -86,9 +87,9 @@ const BottomNavigation = () => {
 
   return (
     <>
-      <div className="w-full bg-white dark:bg-neutral-950 fixed bottom-0 block lg:hidden pb-3">
+      <div className="w-full bg-white dark:bg-neutral-950 fixed z-50 bottom-0 block lg:hidden pb-3">
         <Separator className="mb-3" />
-        <Menubar className="border-0 justify-evenly w-full h-fit p-0">
+        <Menubar className="border-0 justify-evenly w-full h-fit p-0 shadow-none">
           <MenubarMenu>
             <MenubarTrigger className="flex flex-col justify-center items-center gap-1 w-fit">
               <HomeIcon />

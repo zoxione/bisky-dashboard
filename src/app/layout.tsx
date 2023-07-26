@@ -1,10 +1,12 @@
+import { ReactNode } from "react"
+import { Inter } from "next/font/google"
+
+import "@/07-core/styles/globals.css"
 import { cn } from "@/01-shared/libs/shadcn"
 import { Toaster } from "@/01-shared/ui/toaster"
 import Providers from "@/07-core/providers"
-import "@/07-core/styles/globals.css"
+
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { ReactNode } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 

@@ -11,6 +11,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { useState } from "react"
+import { CaretLeftIcon, CaretRightIcon } from "@radix-ui/react-icons"
 
 import {
   Table,
@@ -20,10 +22,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/01-shared/ui/table"
+
 import { Button } from "./button"
-import { useState } from "react"
 import { Input } from "./input"
-import { CaretLeftIcon, CaretRightIcon } from "@radix-ui/react-icons"
 import {
   Select,
   SelectContent,

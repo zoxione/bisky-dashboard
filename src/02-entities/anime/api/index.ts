@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+
 import { IAnimeInfo } from "../models"
 
 export const getAllAnime = async () => {

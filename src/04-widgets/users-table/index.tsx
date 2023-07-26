@@ -1,8 +1,9 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
 import { DataTable } from "@/01-shared/ui/data-table"
 import { IUser } from "@/02-entities/user"
-import { columns } from "./columns"
 import { getUsers } from "@/02-entities/user/api"
+
+import { columns } from "./columns"
 
 const UsersTable = async () => {
   const data = await getUsers()

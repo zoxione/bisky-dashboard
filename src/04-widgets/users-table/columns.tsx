@@ -1,8 +1,9 @@
 "use client"
 
+import { ColumnDef } from "@tanstack/react-table"
+
 import { IUser } from "@/02-entities/user"
 import SortButton from "@/03-features/sort-button/ui"
-import { ColumnDef } from "@tanstack/react-table"
 
 export const columns: ColumnDef<Omit<IUser, "_id">>[] = [
   {

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+
 import calculateUsersByMonth from "./calculate-users-by-month"
 
 const users = [

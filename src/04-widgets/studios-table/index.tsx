@@ -1,10 +1,12 @@
+import { ColumnDef } from "@tanstack/react-table"
+
 import { clientPromise } from "@/01-shared/libs/mongo"
 import { DataTable } from "@/01-shared/ui/data-table"
 import { IAnimeInfo } from "@/02-entities/anime"
-import { ColumnDef } from "@tanstack/react-table"
-import { columns } from "./columns"
 import { IStudio } from "@/02-entities/studio"
 import { getStudios } from "@/02-entities/studio/api"
+
+import { columns } from "./columns"
 
 const StudiosTable = async () => {
   const data = await getStudios()

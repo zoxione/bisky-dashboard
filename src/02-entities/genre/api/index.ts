@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+
 import { IGenre } from "../models"
 
 export const getGenres = async () => {

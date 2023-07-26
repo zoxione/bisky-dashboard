@@ -1,6 +1,7 @@
-import { Button } from "@/01-shared/ui/button"
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons"
 import { Column } from "@tanstack/react-table"
+
+import { Button } from "@/01-shared/ui/button"
 
 interface ISortButtonProps<TData, TValue> {
   label: string

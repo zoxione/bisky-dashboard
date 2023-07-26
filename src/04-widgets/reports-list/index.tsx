@@ -1,7 +1,8 @@
+import { Trash2Icon } from "lucide-react"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/01-shared/ui/avatar"
 import { Button } from "@/01-shared/ui/button"
 import { Separator } from "@/01-shared/ui/separator"
-import { Trash2Icon } from "lucide-react"
 
 interface IReportsListProps {
   data: any

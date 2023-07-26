@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+
 import { IFact } from "../models"
 
 export const getFacts = async () => {

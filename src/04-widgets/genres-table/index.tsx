@@ -1,10 +1,12 @@
+import { ColumnDef } from "@tanstack/react-table"
+
 import { clientPromise } from "@/01-shared/libs/mongo"
 import { DataTable } from "@/01-shared/ui/data-table"
 import { IAnimeInfo } from "@/02-entities/anime"
-import { ColumnDef } from "@tanstack/react-table"
-import { columns } from "./columns"
 import { IGenre } from "@/02-entities/genre"
 import { getGenres } from "@/02-entities/genre/api"
+
+import { columns } from "./columns"
 
 const GenresTable = async () => {
   const data = await getGenres()

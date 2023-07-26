@@ -1,9 +1,10 @@
 import Credentials from "next-auth/providers/credentials"
-
 import { NextAuthOptions } from "next-auth"
-import { clientPromise } from "../mongo"
-import { IUser } from "@/02-entities/user"
 import bcrypt from "bcryptjs"
+
+import { IUser } from "@/02-entities/user"
+
+import { clientPromise } from "../mongo"
 
 export const authOptions: NextAuthOptions = {
   session: {

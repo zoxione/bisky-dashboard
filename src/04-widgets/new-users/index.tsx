@@ -1,5 +1,9 @@
 "use client"
 
+import ReactECharts from "echarts-for-react"
+import { useTheme } from "next-themes"
+import { useState } from "react"
+
 import {
   Select,
   SelectContent,
@@ -9,19 +13,55 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/01-shared/ui/select"
-import { useState } from "react"
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 interface INewUsersProps {
   data: { [year: string]: { month: string; count: number }[] }
 }
 
 const NewUsers = ({ data }: INewUsersProps) => {
+  const { theme, setTheme } = useTheme()
+
   const dataKeys = Object.keys(data)
 
   const [currentYear, setCurrentYear] = useState<string>(
     dataKeys[dataKeys.length - 1],
   )
+
+  const months = data[currentYear].map(({ month }) => month)
+  const counts = data[currentYear].map(({ count }) => count)
+
+  const option = {
+    title: {
+      text: "New users",
+      x: "center",
+      textStyle: {
+        color: theme === "dark" ? "#FAFAFA" : "#0A0A0A",
+      },
+    },
+    tooltip: {
+      trigger: "item",
+      formatter: "{b}: <b>{c}</b>",
+    },
+    xAxis: {
+      type: "category",
+      data: months,
+      splitLine: { show: false },
+    },
+    yAxis: {
+      type: "value",
+      splitLine: { show: false },
+    },
+    series: [
+      {
+        data: counts,
+        type: "bar",
+        itemStyle: {
+          color: "#BE3D73",
+          borderRadius: [8, 8, 0, 0],
+        },
+      },
+    ],
+  }
 
   return (
     <>
@@ -43,26 +83,8 @@ const NewUsers = ({ data }: INewUsersProps) => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <ResponsiveContainer width="100%" height={350}>
-        <BarChart data={data[currentYear]}>
-          <XAxis
-            dataKey="month"
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis
-            allowDecimals={false}
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-            tickFormatter={(value) => `${value}`}
-          />
-          <Bar dataKey="count" fill="#DD5480" radius={[4, 4, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+
+      <ReactECharts option={option} style={{ height: 400 }} />
     </>
   )
 }
