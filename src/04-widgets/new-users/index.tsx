@@ -27,8 +27,8 @@ const NewUsers = ({ data }: INewUsersProps) => {
     dataKeys[dataKeys.length - 1],
   )
 
-  const months = data[currentYear].map(({ month }) => month)
-  const counts = data[currentYear].map(({ count }) => count)
+  const months = data[currentYear]?.map(({ month }) => month)
+  const counts = data[currentYear]?.map(({ count }) => count)
 
   const option = {
     title: {

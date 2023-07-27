@@ -2,6 +2,8 @@ import { Badge } from "@/01-shared/ui/badge"
 import { getAllAnime } from "@/02-entities/anime/api"
 import AnimeTable from "@/04-widgets/anime-table"
 
+export const revalidate = 60
+
 export default async function Page() {
   const data = await getAllAnime()
 

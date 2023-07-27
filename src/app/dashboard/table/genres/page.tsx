@@ -2,6 +2,8 @@ import { Badge } from "@/01-shared/ui/badge"
 import { getGenres } from "@/02-entities/genre/api"
 import GenresTable from "@/04-widgets/genres-table"
 
+export const revalidate = 60
+
 export default async function Page() {
   const data = await getGenres()
 

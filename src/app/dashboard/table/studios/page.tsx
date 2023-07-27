@@ -2,6 +2,8 @@ import { Badge } from "@/01-shared/ui/badge"
 import { getStudios } from "@/02-entities/studio/api"
 import StudiosTable from "@/04-widgets/studios-table"
 
+export const revalidate = 60
+
 export default async function Page() {
   const data = await getStudios()
 

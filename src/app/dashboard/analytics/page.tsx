@@ -8,13 +8,8 @@ const UserRoles = dynamic(() => import("@/04-widgets/user-roles"))
 const VerifiedEmail = dynamic(() => import("@/04-widgets/verified-email"))
 
 export default async function Page() {
-  let countUsersByMonth = {}
-
-  try {
-    countUsersByMonth = await getCountUsersByMonth()
-  } catch (error: any) {
-    console.log(error)
-  }
+  const { data: countUsersByMonth, error: errorCountUsersByMonth } =
+    await getCountUsersByMonth()
 
   const { data: countUserRoles, error: errorCountUserRoles } =
     await getCountUserRoles()

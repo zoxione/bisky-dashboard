@@ -1,3 +1,5 @@
+import { Types } from "mongoose"
+
 import { clientPromise } from "@/01-shared/libs/mongo"
 
 import { IUser } from "../models"
@@ -8,11 +10,43 @@ export const getUsers = async () => {
     .db()
     .collection<IUser>("Users")
     .find({})
-    // .skip(3)
     .limit(1000)
     .toArray()
 
   return data
+}
+
+export const getOneUserById = async (id: string) => {
+  const mongoClient = await clientPromise
+  const data = await mongoClient
+    .db()
+    .collection<IUser>("Users")
+    .findOne({
+      _id: new Types.ObjectId(id),
+    })
+
+  return data as IUser
+}
+
+export const updateUser = async (user: IUser) => {
+  const res = await fetch(
+    `${process.env.APP_URL}/api/database/users/${user._id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    },
+  )
+
+  if (!res.ok) {
+    return { data: null, error: true }
+  }
+
+  const data = await res.json()
+
+  return { data: data, error: false }
 }
 
 export const getCountUsersByMonth = async () => {
@@ -24,10 +58,12 @@ export const getCountUsersByMonth = async () => {
   })
 
   if (!res.ok) {
-    throw new Error("[getCountUsersByMonth] Failed to fetch data")
+    return { data: null, error: true }
   }
 
-  return res.json()
+  const data = await res.json()
+
+  return { data: data, error: false }
 }
 
 export const getCountUserRoles = async () => {
