@@ -6,9 +6,8 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
-import { AlertCircle, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 
-import { Alert, AlertDescription, AlertTitle } from "@/01-shared/ui/alert"
 import { Input } from "@/01-shared/ui/input"
 import {
   Form,

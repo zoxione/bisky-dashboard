@@ -1,12 +1,10 @@
 import { Badge } from "@/01-shared/ui/badge"
-import { getAllAnime } from "@/02-entities/anime/api"
+import UpdateAnimeButton from "@/03-features/update-anime/ui"
 import AnimeTable from "@/04-widgets/anime-table"
 
 export const revalidate = 60
 
 export default async function Page() {
-  const data = await getAllAnime()
-
   return (
     <>
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
@@ -16,6 +14,8 @@ export default async function Page() {
         </Badge>
       </h3>
       <AnimeTable />
+
+      <UpdateAnimeButton />
     </>
   )
 }

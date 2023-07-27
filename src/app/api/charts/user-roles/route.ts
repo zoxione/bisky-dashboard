@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
 
 import { clientPromise } from "@/01-shared/libs/mongo"
-import { authOptions } from "@/01-shared/libs/next-auth"
 import { IUser } from "@/02-entities/user"
+import { LIMIT_MONGODB_ITEMS } from "@/01-shared/data"
 
 export async function GET() {
   // const session = await getServerSession(authOptions)
@@ -16,7 +15,7 @@ export async function GET() {
     .db()
     .collection<IUser>("Users")
     .find({})
-    .limit(1000)
+    .limit(LIMIT_MONGODB_ITEMS)
     .toArray()
 
   const res = [

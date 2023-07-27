@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+import { LIMIT_MONGODB_ITEMS } from "@/01-shared/data"
 
 import { IFact } from "../models"
 
@@ -8,8 +9,7 @@ export const getFacts = async () => {
     .db()
     .collection<IFact>("Facts")
     .find({})
-    // .skip(3)
-    .limit(1000)
+    .limit(LIMIT_MONGODB_ITEMS)
     .toArray()
 
   return data

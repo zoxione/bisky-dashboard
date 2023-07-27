@@ -17,17 +17,8 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarTrigger,
 } from "@/01-shared/ui/menubar"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/01-shared/ui/navigation-menu"
 import { Separator } from "@/01-shared/ui/separator"
 
 const BottomNavigation = () => {

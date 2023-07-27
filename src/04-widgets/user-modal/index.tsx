@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/01-shared/ui/dialog"
 import { IUser } from "@/02-entities/user"
+import { Avatar, AvatarFallback, AvatarImage } from "@/01-shared/ui/avatar"
 
 interface IUserModalProps {
   user: IUser
@@ -28,12 +29,20 @@ const UserModal = ({ user }: IUserModalProps) => {
       <DialogContent
         onCloseButton={onDismiss}
         onEscapeKeyDown={onDismiss}
-        onInteractOutside={onDismiss}
+        // onInteractOutside={onDismiss}
         onPointerDownOutside={onDismiss}
       >
         <DialogHeader>
           <DialogTitle>{user.username}</DialogTitle>
-          <DialogDescription>{user.email}</DialogDescription>
+          <DialogDescription>
+            <Avatar>
+              <AvatarImage src={user.image ?? ""} alt={user.username} />
+              <AvatarFallback>
+                {user.username.substring(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            {user.email}
+          </DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>

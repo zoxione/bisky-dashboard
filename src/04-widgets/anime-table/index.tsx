@@ -7,17 +7,22 @@ const AnimeTable = async () => {
   const data = await getAllAnime()
 
   let editData = data.map((obj) => {
-    const { _id, franchise, ...newObj } = obj
     let label = ""
-    if (newObj.labels[0] !== "") {
-      label = newObj.labels[0]
-    } else if (newObj.labels[1] !== "") {
-      label = newObj.labels[1]
+    if (obj.labels[0] !== "") {
+      label = obj.labels[0]
+    } else if (obj.labels[1] !== "") {
+      label = obj.labels[1]
     }
-    return { label, ...newObj }
+    return { label, ...obj }
   })
 
-  return <DataTable columns={columns} data={editData} columnFilter="label" />
+  return (
+    <DataTable
+      columns={columns}
+      data={JSON.parse(JSON.stringify(editData))}
+      columnFilter="label"
+    />
+  )
 }
 
 export default AnimeTable

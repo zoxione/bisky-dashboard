@@ -1,10 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 import { useTheme } from "next-themes"
 
-import { Button } from "@/01-shared/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,

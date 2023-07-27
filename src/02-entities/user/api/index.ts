@@ -1,6 +1,7 @@
 import { Types } from "mongoose"
 
 import { clientPromise } from "@/01-shared/libs/mongo"
+import { LIMIT_MONGODB_ITEMS } from "@/01-shared/data"
 
 import { IUser } from "../models"
 
@@ -10,7 +11,7 @@ export const getUsers = async () => {
     .db()
     .collection<IUser>("Users")
     .find({})
-    .limit(1000)
+    .limit(LIMIT_MONGODB_ITEMS)
     .toArray()
 
   return data

@@ -1,9 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import dayjs from "dayjs"
 
-import { IAnimeInfo } from "@/02-entities/anime"
 import { IGenre } from "@/02-entities/genre"
 import SortButton from "@/03-features/sort-button/ui"
 

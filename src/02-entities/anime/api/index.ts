@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+import { LIMIT_MONGODB_ITEMS } from "@/01-shared/data"
 
 import { IAnimeInfo } from "../models"
 
@@ -8,8 +9,7 @@ export const getAllAnime = async () => {
     .db()
     .collection<IAnimeInfo>("AnimeInfo")
     .find({})
-    // .skip(3)
-    .limit(5000)
+    .limit(LIMIT_MONGODB_ITEMS)
     .toArray()
 
   return data

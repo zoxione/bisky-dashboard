@@ -1,12 +1,9 @@
 import { Badge } from "@/01-shared/ui/badge"
-import { getStudios } from "@/02-entities/studio/api"
 import StudiosTable from "@/04-widgets/studios-table"
 
 export const revalidate = 60
 
 export default async function Page() {
-  const data = await getStudios()
-
   return (
     <>
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">

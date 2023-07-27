@@ -1,10 +1,21 @@
 {
-  "plugins": ["import", "react", "jsx-a11y"],
+  "plugins": ["import", "unused-imports", "react", "jsx-a11y"],
   "extends": ["next/core-web-vitals"],
   "rules": {
-    "react-hooks/exhaustive-deps": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "import/order": [
       "warn",
       {

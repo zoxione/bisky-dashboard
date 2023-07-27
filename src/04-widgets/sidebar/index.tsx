@@ -2,7 +2,6 @@
 
 import {
   BackpackIcon,
-  BarChartIcon,
   HomeIcon,
   InfoCircledIcon,
   PersonIcon,

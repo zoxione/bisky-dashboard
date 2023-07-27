@@ -14,10 +14,6 @@ export default async function Page() {
   const { data: countUserRoles, error: errorCountUserRoles } =
     await getCountUserRoles()
 
-  if (errorCountUserRoles) {
-    console.error("errorCountUserRoles")
-  }
-
   return (
     <div className="space-y-4">
       <Card className="">
@@ -25,7 +21,7 @@ export default async function Page() {
           <CardTitle>New users</CardTitle>
         </CardHeader>
         <CardContent className="pl-2">
-          <NewUsers data={countUsersByMonth} />
+          {countUsersByMonth && <NewUsers data={countUsersByMonth} />}
         </CardContent>
       </Card>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
@@ -34,7 +30,7 @@ export default async function Page() {
             <CardTitle>User roles</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
-            <UserRoles data={countUserRoles} />
+            {countUserRoles && <UserRoles data={countUserRoles} />}
           </CardContent>
         </Card>
         <Card className="w-full">

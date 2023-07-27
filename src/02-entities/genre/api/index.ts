@@ -1,4 +1,5 @@
 import { clientPromise } from "@/01-shared/libs/mongo"
+import { LIMIT_MONGODB_ITEMS } from "@/01-shared/data"
 
 import { IGenre } from "../models"
 
@@ -8,8 +9,7 @@ export const getGenres = async () => {
     .db()
     .collection<IGenre>("Genres")
     .find({})
-    // .skip(3)
-    .limit(1000)
+    .limit(LIMIT_MONGODB_ITEMS)
     .toArray()
 
   return data

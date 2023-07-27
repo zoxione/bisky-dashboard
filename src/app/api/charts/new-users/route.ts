@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-
-import { authOptions } from "@/01-shared/libs/next-auth"
 
 import calculateUsersByMonth from "./calculate-users-by-month"
 
@@ -79,7 +76,6 @@ export async function GET() {
   //   .db()
   //   .collection<IUser>("Users")
   //   .find({})
-  //   .limit(1000)
   //   .toArray()
 
   const res = calculateUsersByMonth(users)

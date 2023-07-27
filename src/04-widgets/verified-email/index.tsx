@@ -4,7 +4,7 @@ import ReactECharts from "echarts-for-react"
 import { useTheme } from "next-themes"
 
 const VerifiedEmail = () => {
-  const { theme, setTheme } = useTheme()
+  const { theme } = useTheme()
 
   const option = {
     title: {

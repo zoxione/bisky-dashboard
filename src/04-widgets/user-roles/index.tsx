@@ -8,7 +8,7 @@ interface IUserRolesProps {
 }
 
 const UserRoles = ({ data }: IUserRolesProps) => {
-  const { theme, setTheme } = useTheme()
+  const { theme } = useTheme()
 
   const option = {
     title: {
