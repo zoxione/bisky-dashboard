@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <main className="grid grid-cols-1 lg:grid-cols-5 h-full">
         <Sidebar />
         <BottomNavigation />
-        <section className="col-span-3 lg:col-span-4 p-4 pb-[97px]">
+        <section className="col-span-3 lg:col-span-4 p-4 pb-[97px] space-y-8">
           {children}
         </section>
       </main>

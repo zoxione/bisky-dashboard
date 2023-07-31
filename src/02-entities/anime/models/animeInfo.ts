@@ -2,6 +2,7 @@ import { Types } from "mongoose"
 
 export interface IAnimeInfo {
   _id: Types.ObjectId
+  id: number
   labels: string[]
   poster: string | null
   kind: "tv" | "movie" | "ova" | "ona" | "special" | "music"

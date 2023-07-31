@@ -13,6 +13,7 @@ export default async function Page() {
           Only reading
         </Badge>
       </h3>
+
       <AnimeTable />
 
       <UpdateAnimeButton />

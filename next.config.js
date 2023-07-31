@@ -27,6 +27,9 @@ const nextConfig = {
     GITHUB_ACCESSTOKEN: process.env.GITHUB_ACCESSTOKEN,
     GITHUB_UPDATEANIME_URL: process.env.GITHUB_UPDATEANIME_URL,
   },
+  experimental: {
+    serverActions: true,
+  },
 }
 
 module.exports = nextConfig
