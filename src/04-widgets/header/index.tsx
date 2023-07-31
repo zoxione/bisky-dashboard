@@ -3,6 +3,7 @@
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import Image from "next/image"
+import { LogOutIcon } from "lucide-react"
 
 import ToggleTheme from "@/03-features/toggle-theme/ui"
 
@@ -68,6 +69,7 @@ const Header = () => {
                   </MenubarItem>
                   <MenubarSeparator />
                   <MenubarItem onClick={handleSignOut} className="text-red-600">
+                    <LogOutIcon className="mr-2 h-4 w-4" />
                     Sign out
                   </MenubarItem>
                 </MenubarContent>

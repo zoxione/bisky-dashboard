@@ -2,10 +2,25 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import dayjs from "dayjs"
-import { MoreHorizontal } from "lucide-react"
+import {
+  ExternalLinkIcon,
+  MoreHorizontal,
+  PencilIcon,
+  Trash2Icon,
+} from "lucide-react"
 
-import { IAnimeInfo } from "@/02-entities/anime"
-import SortButton from "@/03-features/sort-button/ui"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/01-shared/ui/alert-dialog"
+import { Button } from "@/01-shared/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +29,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/01-shared/ui/dropdown-menu"
-import { Button } from "@/01-shared/ui/button"
-import { useAddAnimeInfoMutation } from "@/02-entities/anime/api"
+import { IAnimeInfo } from "@/02-entities/anime"
+import EditAnimeForm from "@/03-features/edit-anime-form"
+import SortButton from "@/03-features/sort-button/ui"
 
 export const columns: ColumnDef<IAnimeInfo>[] = [
   {
@@ -75,68 +91,90 @@ export const columns: ColumnDef<IAnimeInfo>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const anime = row.original
+      const animeInfo = row.original
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={async () => {
-                const [addNewAnimeInfo, {}] = useAddAnimeInfoMutation()
 
-                // await addNewAnimeInfo({
-                //   _id: new ObjectId("da"),
-                //   id: 0,
-                //   labels: [],
-                //   poster: null,
-                //   kind: "tv",
-                //   scores: 0,
-                //   anotherScores: [],
-                //   status: "anons",
-                //   episodes: {
-                //     count: null,
-                //     aired: null,
-                //     duration: 0,
-                //     nextEpisodeAt: null
-                //   },
-                //   dates: {
-                //     airedOn: null,
-                //     releasedOn: null
-                //   },
-                //   rating: "g",
-                //   description: null,
-                //   screenshots: [],
-                //   videos: [],
-                //   genres: [],
-                //   studios: [],
-                //   franchise: {
-                //     name: null,
-                //     animes: []
-                //   },
-                //   updateDate: new Date()
-                // })
-              }}
-            >
-              Add new item
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {}}>Edit data</DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-red-600"
-              onClick={() => {
-                console.log(anime)
-              }}
-            >
-              Delete from database
-            </DropdownMenuItem>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem
+                  onSelect={(e) => {
+                    e.preventDefault()
+                  }}
+                >
+                  <PencilIcon className="mr-2 h-4 w-4" />
+                  Edit data
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Edit data</AlertDialogTitle>
+                  <EditAnimeForm />
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => {
+                      console.log(animeInfo)
+                    }}
+                  >
+                    Update
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem
+                  className="text-red-600"
+                  onSelect={(e) => {
+                    e.preventDefault()
+                  }}
+                >
+                  <Trash2Icon className="mr-2 h-4 w-4" />
+                  Delete from database
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    the item from the database and remove its data from our
+                    servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => {
+                      console.log(animeInfo)
+                    }}
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Check on bisky</DropdownMenuItem>
+            <DropdownMenuItem>
+              <ExternalLinkIcon className="mr-2 h-4 w-4" />
+              <a
+                href={`https://dev.bisky.one/anime/${animeInfo.id}`}
+                target="_blank"
+              >
+                Check on bisky
+              </a>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

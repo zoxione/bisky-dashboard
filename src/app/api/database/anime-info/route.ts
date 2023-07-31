@@ -14,21 +14,28 @@ export async function GET(req: NextRequest) {
   const page = Number(searchParams.get("page")) || 0
   const limit = Number(searchParams.get("limit")) || 10
   const search = searchParams.get("search") || ""
+  const searchQuery = search !== "" ? { $text: { $search: search } } : {}
 
   const mongoClient = await clientPromise
 
-  const stats = await mongoClient.db().command({ collStats: "AnimeInfo" })
+  // const stats = await mongoClient.db().command({
+  //   collStats: "AnimeInfo",
+  //   query: search !== "" ? { $text: { $search: search } } : {},
+  // })
+
+  const matchingDocumentsCount = await mongoClient
+    .db()
+    .collection<IAnimeInfo>("AnimeInfo")
+    .countDocuments(searchQuery)
+
+  const stats = {
+    count: matchingDocumentsCount,
+  }
 
   const data = await mongoClient
     .db()
     .collection<IAnimeInfo>("AnimeInfo")
-    .find(
-      search !== ""
-        ? {
-            $text: { $search: search },
-          }
-        : {},
-    )
+    .find(searchQuery)
     .skip(page * limit)
     .limit(limit)
     .toArray()

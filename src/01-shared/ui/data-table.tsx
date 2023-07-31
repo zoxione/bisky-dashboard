@@ -33,7 +33,6 @@ import {
   TableRow,
 } from "@/01-shared/ui/table"
 
-
 import { Button } from "./button"
 import { Input } from "./input"
 import {
@@ -45,7 +44,7 @@ import {
   SelectValue,
 } from "./select"
 import { Skeleton } from "./skeleton"
-
+import { Badge } from "./badge"
 
 interface IDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -113,21 +112,41 @@ export function DataTable<TData, TValue>({
     },
   })
 
+  const calcMaxPageIndex = () => {
+    return Math.floor(dataQuery.stats.count / pageSize)
+  }
+
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchFilter(event.target.value)
     setPageIndex(0)
   }
 
-  const calcMaxPageIndex = () => {
-    return Math.floor(dataQuery.stats.count / pageSize)
+  const handleSelectPageIndex = (value: string) => {
+    setPageIndex(0)
+    setPageSize(Number(value))
+    table.setPageSize(Number(value))
+  }
+
+  const handleChangePageIndex = (e: ChangeEvent<HTMLInputElement>) => {
+    const page = e.target.value ? Number(e.target.value) - 1 : 0
+    setPageIndex(page + 1)
+  }
+
+  const handlePrevButton = () => {
+    setPageIndex((prev) => prev - 1)
+  }
+
+  const handleNextButton = () => {
+    setPageIndex((prev) => prev + 1)
   }
 
   return (
     <div className="space-y-4">
       {columnFilter !== "" && (
-        <div className="flex items-center ">
+        <div className="flex items-center gap-2">
+          <span>Search: </span>
           <Input
-            placeholder={`Filter ${columnFilter}...`}
+            placeholder={`Find ${columnFilter}...`}
             value={searchFilter}
             onChange={(event) => handleSearch(event)}
             className="max-w-sm"
@@ -136,12 +155,12 @@ export function DataTable<TData, TValue>({
       )}
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-        <span className="flex flex-row items-center">
-          Count items:{" "}
+        <span className="flex flex-row items-center gap-2">
+          Count items:
           {isLoading ? (
             <Skeleton className="h-[24px] w-[80px] ml-2" />
           ) : (
-            dataQuery.stats.count
+            <Badge variant="outline">{dataQuery.stats.count}</Badge>
           )}
         </span>
 
@@ -159,10 +178,7 @@ export function DataTable<TData, TValue>({
                   min={0}
                   max={calcMaxPageIndex()}
                   value={pageIndex}
-                  onChange={(e) => {
-                    const page = e.target.value ? Number(e.target.value) - 1 : 0
-                    setPageIndex(page + 1)
-                  }}
+                  onChange={(event) => handleChangePageIndex(event)}
                 />
               </>
             )}
@@ -170,10 +186,7 @@ export function DataTable<TData, TValue>({
           <div className="flex items-center gap-1">
             <Select
               value={pageSize.toString()}
-              onValueChange={(value: string) => {
-                setPageSize(Number(value))
-                table.setPageSize(Number(value))
-              }}
+              onValueChange={(value) => handleSelectPageIndex(value)}
               disabled={isFetching}
             >
               <SelectTrigger className="w-[180px]">
@@ -194,9 +207,7 @@ export function DataTable<TData, TValue>({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
-                setPageIndex((prev) => prev - 1)
-              }}
+              onClick={handlePrevButton}
               disabled={isFetching || pageIndex <= 0}
             >
               <CaretLeftIcon className="w-4 h-4" />
@@ -204,9 +215,7 @@ export function DataTable<TData, TValue>({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
-                setPageIndex((prev) => prev + 1)
-              }}
+              onClick={handleNextButton}
               disabled={
                 isFetching || pageIndex >= dataQuery?.stats?.count / pageSize
               }
