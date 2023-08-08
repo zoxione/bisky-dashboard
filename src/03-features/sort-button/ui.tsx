@@ -8,16 +8,9 @@ interface ISortButtonProps<TData, TValue> {
   column: Column<TData, TValue>
 }
 
-const SortButton = <TData, TValue>({
-  column,
-  label,
-}: ISortButtonProps<TData, TValue>) => {
+export const SortButton = <TData, TValue>({ column, label }: ISortButtonProps<TData, TValue>) => {
   return (
-    <Button
-      variant="ghost"
-      className="p-2"
-      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-    >
+    <Button variant="ghost" className="p-2" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
       {label}
       {column.getIsSorted() === "asc" ? (
         <ArrowDownIcon className="ml-1 h-4 w-4" />
@@ -27,5 +20,3 @@ const SortButton = <TData, TValue>({
     </Button>
   )
 }
-
-export default SortButton

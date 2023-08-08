@@ -1,8 +1,6 @@
 import { Badge } from "@/01-shared/ui/badge"
-import UpdateAnimeButton from "@/03-features/update-anime/ui"
-import AnimeTable from "@/04-widgets/anime-table"
-
-export const revalidate = 60
+import { UpdateAnimeButton } from "@/03-features/update-anime"
+import { AnimeTable } from "@/04-widgets/anime-table"
 
 export default async function Page() {
   return (

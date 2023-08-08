@@ -2,7 +2,7 @@ import Credentials from "next-auth/providers/credentials"
 import { NextAuthOptions } from "next-auth"
 import bcrypt from "bcryptjs"
 
-import { IUser } from "@/02-entities/user"
+import { User } from "@/02-entities/user/models/user"
 
 import { clientPromise } from "../mongo"
 
@@ -30,10 +30,7 @@ export const authOptions: NextAuthOptions = {
         const password: string = credentials.password
 
         const mongoClient = await clientPromise
-        const user = await mongoClient
-          .db()
-          .collection<IUser>("Users")
-          .findOne({ username: username })
+        const user = await mongoClient.db().collection<User>("Users").findOne({ username: username })
 
         if (user && bcrypt.compareSync(password, user.password)) {
           if (user.role === "admin") {

@@ -1,7 +1,5 @@
-import { Types } from "mongoose"
-
-export interface IStudio {
-  _id: Types.ObjectId
+export type Studio = {
+  _id: string
   id: number
   name: string
   img: string | null

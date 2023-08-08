@@ -1,5 +1,5 @@
 import { Badge } from "@/01-shared/ui/badge"
-import GenresTable from "@/04-widgets/genres-table"
+import { GenresTable } from "@/04-widgets/genres-table"
 
 export const revalidate = 60
 

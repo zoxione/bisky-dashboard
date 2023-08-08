@@ -1,4 +1,4 @@
-import NotDoneYet from "@/04-widgets/not-done-yet"
+import { NotDoneYet } from "@/04-widgets/not-done-yet"
 
 export default async function Page() {
   return (

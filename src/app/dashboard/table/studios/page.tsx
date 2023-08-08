@@ -1,5 +1,5 @@
 import { Badge } from "@/01-shared/ui/badge"
-import StudiosTable from "@/04-widgets/studios-table"
+import { StudiosTable } from "@/04-widgets/studios-table"
 
 export const revalidate = 60
 

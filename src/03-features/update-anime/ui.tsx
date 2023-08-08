@@ -5,7 +5,7 @@ import { useState } from "react"
 
 import { Button } from "@/01-shared/ui/button"
 
-const UpdateAnimeButton = () => {
+export const UpdateAnimeButton = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleUpdateAnime = async () => {
@@ -36,5 +36,3 @@ const UpdateAnimeButton = () => {
     </Button>
   )
 }
-
-export default UpdateAnimeButton

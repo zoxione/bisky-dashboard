@@ -1,4 +1,4 @@
-import AuthCard from "@/04-widgets/auth-card"
+import { AuthCard } from "@/04-widgets/auth-card"
 
 export default function AuthPage() {
   return (

@@ -2,26 +2,45 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import { IGenre } from "@/02-entities/genre"
-import SortButton from "@/03-features/sort-button/ui"
+import { Genre } from "@/02-entities/genre/models/genre"
+import { SortButton } from "@/03-features/sort-button"
 
-export const columns: ColumnDef<Omit<IGenre, "_id">>[] = [
+export const columns: ColumnDef<Genre>[] = [
   {
-    accessorKey: "name.en",
+    accessorKey: "_id",
+    meta: {
+      type: "text",
+      disabled: true,
+    },
     header: ({ column }) => {
-      return <SortButton column={column} label="Name EN" />
+      return <SortButton column={column} label="_id" />
     },
   },
   {
-    accessorKey: "name.ru",
+    accessorKey: "name",
+    meta: {
+      type: "object",
+    },
     header: ({ column }) => {
-      return <SortButton column={column} label="Name RU" />
+      return <SortButton column={column} label="name" />
     },
   },
   {
     accessorKey: "hentai",
+    meta: {
+      type: "text",
+    },
     header: ({ column }) => {
-      return <SortButton column={column} label="Hentai" />
+      return <SortButton column={column} label="hentai" />
+    },
+  },
+  {
+    accessorKey: "linkId",
+    meta: {
+      type: "object",
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="linkId" />
     },
   },
 ]

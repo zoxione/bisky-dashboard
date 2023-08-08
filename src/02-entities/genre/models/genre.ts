@@ -1,7 +1,5 @@
-import { Types } from "mongoose"
-
-export interface IGenre {
-  _id: Types.ObjectId
+export type Genre = {
+  _id: string
   linkId: {
     anime: number | null
     manga: number

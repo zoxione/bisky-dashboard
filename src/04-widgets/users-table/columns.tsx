@@ -1,92 +1,108 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { ExternalLinkIcon } from "lucide-react"
 import Link from "next/link"
 
-import { IUser } from "@/02-entities/user"
-import SortButton from "@/03-features/sort-button/ui"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/01-shared/ui/select"
+import { Badge } from "@/01-shared/ui/badge"
+import { User } from "@/02-entities/user/models/user"
+import { SortButton } from "@/03-features/sort-button"
 
-export const updateUser = async (user: IUser) => {
-  const res = await fetch(
-    `${process.env.APP_URL}/api/database/users/${user._id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    },
-  )
-
-  if (!res.ok) {
-    return { data: null, error: true }
-  }
-
-  const data = await res.json()
-
-  return { data: data, error: false }
-}
-
-export const columns: ColumnDef<IUser>[] = [
+export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "username",
-    header: ({ column }) => {
-      return <SortButton column={column} label="Username" />
+    accessorKey: "profile",
+    meta: {
+      type: "profile",
     },
-    cell: ({ row }) => {
-      const user = row.original
-      return <Link href={`/dashboard/user/${user._id}`}>{user.username}</Link>
-    },
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return <SortButton column={column} label="Email" />
-    },
-  },
-  {
-    accessorKey: "role",
-    header: ({ column }) => {
-      return <SortButton column={column} label="Role" />
-    },
+    header: () => <span className="p-2">User</span>,
     cell: ({ row }) => {
       const user = row.original
       return (
-        <Select
-          value={user.role}
-          onValueChange={async (role: string) => {
-            user.role = role
-            await updateUser(user)
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Roles</SelectLabel>
-              <SelectItem value="user">User</SelectItem>
-              <SelectItem value="admin">Admin</SelectItem>
-              <SelectItem value="moderator">Moderator</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <Link href={`/dashboard/user/${user._id}`}>
+          <Badge variant="secondary">
+            {user.username}
+            <ExternalLinkIcon className="w-3 h-3 ml-2" />
+          </Badge>
+        </Link>
       )
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "_id",
+    meta: {
+      type: "text",
+      disabled: true,
+    },
     header: ({ column }) => {
-      return <SortButton column={column} label="Name" />
+      return <SortButton column={column} label="_id" />
+    },
+  },
+  {
+    accessorKey: "username",
+    meta: {
+      type: "text",
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="username" />
+    },
+  },
+  {
+    accessorKey: "password",
+    meta: {
+      type: "text",
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="password" />
+    },
+  },
+  {
+    accessorKey: "email",
+    meta: {
+      type: "email",
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="email" />
+    },
+  },
+  {
+    accessorKey: "image",
+    meta: {
+      type: "text",
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="image" />
+    },
+  },
+  {
+    accessorKey: "role",
+    meta: {
+      type: "select",
+      options: [
+        { value: "admin", label: "Admin" },
+        { value: "moderator", label: "Moderator" },
+        { value: "user", label: "User" },
+      ],
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="role" />
+    },
+  },
+  {
+    accessorKey: "name",
+    meta: {
+      type: "text",
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="name" />
+    },
+  },
+  {
+    accessorKey: "refreshToken",
+    meta: {
+      type: "text",
+    },
+    header: ({ column }) => {
+      return <SortButton column={column} label="refreshToken" />
     },
   },
 ]

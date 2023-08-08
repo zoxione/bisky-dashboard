@@ -1,11 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/01-shared/ui/card"
-import ReportsList from "@/04-widgets/reports-list"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/01-shared/ui/card"
+import { ReportsList } from "@/04-widgets/reports-list"
 
 export default async function Page() {
   const data = [

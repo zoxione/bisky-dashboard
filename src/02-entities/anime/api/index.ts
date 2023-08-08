@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { Document } from "bson"
 
-import { IAnimeInfo } from "../models"
+import { AnimeInfo } from "../models/anime-info"
 
 interface IGetAllAnimeInfoResponse {
-  stats: Document
-  data: IAnimeInfo[]
+  stats: {
+    count: number
+  }
+  data: AnimeInfo[]
 }
 
 export const animeAPI = createApi({
@@ -13,11 +14,9 @@ export const animeAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.APP_URL}/api/database/`,
   }),
+  tagTypes: ["AnimeInfo"],
   endpoints: (build) => ({
-    getAllAnimeInfo: build.query<
-      IGetAllAnimeInfoResponse,
-      { page: number; limit: number; search: string }
-    >({
+    getAllAnimeInfo: build.query<IGetAllAnimeInfoResponse, { page: number; limit: number; search: string }>({
       query: (args) => {
         const { page = 0, limit = 10, search = "" } = args
         return {
@@ -30,15 +29,37 @@ export const animeAPI = createApi({
           },
         }
       },
+      providesTags: ["AnimeInfo"],
     }),
-    addAnimeInfo: build.mutation<IAnimeInfo, IAnimeInfo>({
+    updateOneAnimeInfo: build.mutation<AnimeInfo, AnimeInfo>({
       query: (animeInfo) => ({
-        url: "/anime-info",
-        method: "POST",
+        url: `/anime-info/${animeInfo._id}`,
+        method: "PUT",
         body: animeInfo,
       }),
+      invalidatesTags: (result) => (result ? ["AnimeInfo"] : []),
+    }),
+    updateManyAnimeInfo: build.mutation<AnimeInfo[], AnimeInfo[]>({
+      query: (animeInfos) => ({
+        url: `/anime-info`,
+        method: "PUT",
+        body: animeInfos,
+      }),
+      invalidatesTags: (result) => (result ? ["AnimeInfo"] : []),
+    }),
+    deleteOneAnimeInfo: build.mutation<AnimeInfo, AnimeInfo>({
+      query: (animeInfo) => ({
+        url: `/anime-info/${animeInfo._id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result) => (result ? ["AnimeInfo"] : []),
     }),
   }),
 })
 
-export const { useGetAllAnimeInfoQuery, useAddAnimeInfoMutation } = animeAPI
+export const {
+  useGetAllAnimeInfoQuery,
+  useUpdateOneAnimeInfoMutation,
+  useUpdateManyAnimeInfoMutation,
+  useDeleteOneAnimeInfoMutation,
+} = animeAPI

@@ -1,6 +1,4 @@
-import { Types } from "mongoose"
-
-export interface IFact {
-  _id: Types.ObjectId
+export type Fact = {
+  _id: string
   fact: string
 }

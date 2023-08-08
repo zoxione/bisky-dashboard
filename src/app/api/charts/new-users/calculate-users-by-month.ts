@@ -3,7 +3,7 @@ export interface IMonth {
   count: number
 }
 
-const calculateUsersByMonth = (users: any[]) => {
+export const calculateUsersByMonth = (users: any[]) => {
   let res: { [year: number]: IMonth[] } = {}
 
   for (let i = 0; i < users.length; i++) {
@@ -73,5 +73,3 @@ const calculateUsersByMonth = (users: any[]) => {
 
   return res
 }
-
-export default calculateUsersByMonth

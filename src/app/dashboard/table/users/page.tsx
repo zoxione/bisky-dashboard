@@ -1,7 +1,5 @@
 import { Badge } from "@/01-shared/ui/badge"
-import UsersTable from "@/04-widgets/users-table"
-
-export const revalidate = 0
+import { UsersTable } from "@/04-widgets/users-table"
 
 export default async function Page() {
   return (
@@ -12,6 +10,7 @@ export default async function Page() {
           Can edit
         </Badge>
       </h3>
+
       <UsersTable />
     </>
   )

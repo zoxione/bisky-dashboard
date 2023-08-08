@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 
 import { clientPromise } from "@/01-shared/libs/mongo"
-import { IUser } from "@/02-entities/user"
 import { LIMIT_MONGODB_ITEMS } from "@/01-shared/data"
+import { DbUser } from "@/02-entities/user/models/db-user"
 
 export async function GET() {
   // const session = await getServerSession(authOptions)
@@ -11,12 +11,7 @@ export async function GET() {
   // }
 
   const mongoClient = await clientPromise
-  const data = await mongoClient
-    .db()
-    .collection<IUser>("Users")
-    .find({})
-    .limit(LIMIT_MONGODB_ITEMS)
-    .toArray()
+  const data = await mongoClient.db().collection<DbUser>("Users").find({}).limit(LIMIT_MONGODB_ITEMS).toArray()
 
   const res = [
     {

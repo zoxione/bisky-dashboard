@@ -1,12 +1,12 @@
-import { Types } from "mongoose"
+import { UserRole } from "./user-role"
 
-export interface IUser {
-  _id: Types.ObjectId
+export type User = {
+  _id: string
   username: string
   password: string
   email: string
   image: string | null
-  role: string
+  role: UserRole
   name: string | null
   refreshToken: string | null
 }

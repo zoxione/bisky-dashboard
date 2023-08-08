@@ -1,85 +1,61 @@
-import { Types } from "mongoose"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-import { clientPromise } from "@/01-shared/libs/mongo"
-import { LIMIT_MONGODB_ITEMS } from "@/01-shared/data"
+import { User } from "../models/user"
 
-import { IUser } from "../models"
-
-export const getUsers = async () => {
-  const mongoClient = await clientPromise
-  const data = await mongoClient
-    .db()
-    .collection<IUser>("Users")
-    .find({})
-    .limit(LIMIT_MONGODB_ITEMS)
-    .toArray()
-
-  return data
+interface IGetAllUsersResponse {
+  stats: {
+    count: number
+  }
+  data: User[]
 }
 
-export const getOneUserById = async (id: string) => {
-  const mongoClient = await clientPromise
-  const data = await mongoClient
-    .db()
-    .collection<IUser>("Users")
-    .findOne({
-      _id: new Types.ObjectId(id),
-    })
-
-  return data as IUser
-}
-
-export const updateUser = async (user: IUser) => {
-  const res = await fetch(
-    `${process.env.APP_URL}/api/database/users/${user._id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+export const usersAPI = createApi({
+  reducerPath: "users",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.APP_URL}/api/database/`,
+  }),
+  tagTypes: ["Users"],
+  endpoints: (build) => ({
+    getAllUsers: build.query<IGetAllUsersResponse, { page: number; limit: number; search: string }>({
+      query: (args) => {
+        const { page = 0, limit = 10, search = "" } = args
+        return {
+          url: "/users",
+          method: "GET",
+          params: {
+            page,
+            limit,
+            search,
+          },
+        }
       },
-      body: JSON.stringify(user),
-    },
-  )
+      providesTags: ["Users"],
+    }),
+    updateOneUser: build.mutation<User, User>({
+      query: (user) => ({
+        url: `/users/${user._id}`,
+        method: "PUT",
+        body: user,
+      }),
+      invalidatesTags: (result) => (result ? ["Users"] : []),
+    }),
+    updateManyUsers: build.mutation<User[], User[]>({
+      query: (users) => ({
+        url: `/users`,
+        method: "PUT",
+        body: users,
+      }),
+      invalidatesTags: (result) => (result ? ["Users"] : []),
+    }),
+    deleteOneUser: build.mutation<User, User>({
+      query: (user) => ({
+        url: `/users/${user._id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result) => (result ? ["Users"] : []),
+    }),
+  }),
+})
 
-  if (!res.ok) {
-    return { data: null, error: true }
-  }
-
-  const data = await res.json()
-
-  return { data: data, error: false }
-}
-
-export const getCountUsersByMonth = async () => {
-  const res = await fetch(`${process.env.APP_URL}/api/charts/new-users`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-
-  if (!res.ok) {
-    return { data: null, error: true }
-  }
-
-  const data = await res.json()
-
-  return { data: data, error: false }
-}
-
-export const getCountUserRoles = async () => {
-  const res = await fetch(`${process.env.APP_URL}/api/charts/user-roles`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-
-  if (!res.ok) {
-    return { data: null, error: true }
-  }
-
-  const data = await res.json()
-
-  return { data: data, error: false }
-}
+export const { useGetAllUsersQuery, useUpdateOneUserMutation, useDeleteOneUserMutation, useUpdateManyUsersMutation } =
+  usersAPI
