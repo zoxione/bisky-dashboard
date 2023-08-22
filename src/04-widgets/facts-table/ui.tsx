@@ -1,7 +1,13 @@
 "use client"
 
 import { DataTable } from "@/03-features/data-table"
-import { useDeleteOneFactMutation, useGetAllFactsQuery, useUpdateManyFactsMutation } from "@/02-entities/fact/api"
+import {
+  factsAPI,
+  useDeleteOneFactMutation,
+  useGetAllFactsQuery,
+  usePrefetch,
+  useUpdateManyFactsMutation,
+} from "@/02-entities/fact/api"
 
 import { columns } from "./columns"
 
@@ -10,6 +16,8 @@ export const FactsTable = () => {
     <DataTable
       columns={columns}
       useQuery={useGetAllFactsQuery}
+      useQueryName={factsAPI.endpoints.getAllFacts.name}
+      usePrefetch={usePrefetch}
       useUpdateManyMutation={useUpdateManyFactsMutation}
       filter=""
       // editDataForm={EditUserForm}

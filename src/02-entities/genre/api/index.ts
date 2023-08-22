@@ -29,6 +29,7 @@ export const genresAPI = createApi({
           },
         }
       },
+      providesTags: ["Genres"],
     }),
     updateOneGenre: build.mutation<Genre, Genre>({
       query: (genre) => ({
@@ -57,6 +58,7 @@ export const genresAPI = createApi({
 })
 
 export const {
+  usePrefetch,
   useGetAllGenresQuery,
   useUpdateOneGenreMutation,
   useUpdateManyGenresMutation,

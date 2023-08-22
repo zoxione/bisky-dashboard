@@ -12,8 +12,9 @@ import { useUpdateOneUserMutation } from "@/02-entities/user/api"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/01-shared/ui/select"
 import { User } from "@/02-entities/user/models/user"
 
-import { editUserFormSchema } from "./edit-user-form-schema"
 import { IEditDataFormProps } from "../data-table"
+
+import { editUserFormSchema } from "./edit-user-form-schema"
 
 export const EditUserForm = ({ defaultData }: IEditDataFormProps<User>) => {
   const { toast } = useToast()

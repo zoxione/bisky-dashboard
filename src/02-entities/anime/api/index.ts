@@ -58,6 +58,7 @@ export const animeAPI = createApi({
 })
 
 export const {
+  usePrefetch,
   useGetAllAnimeInfoQuery,
   useUpdateOneAnimeInfoMutation,
   useUpdateManyAnimeInfoMutation,

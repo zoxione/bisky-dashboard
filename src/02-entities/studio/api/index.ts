@@ -29,6 +29,7 @@ export const studiosAPI = createApi({
           },
         }
       },
+      providesTags: ["Studios"],
     }),
     updateOneStudio: build.mutation<Studio, Studio>({
       query: (studio) => ({
@@ -57,6 +58,7 @@ export const studiosAPI = createApi({
 })
 
 export const {
+  usePrefetch,
   useGetAllStudiosQuery,
   useUpdateOneStudioMutation,
   useUpdateManyStudiosMutation,

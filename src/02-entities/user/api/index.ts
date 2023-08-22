@@ -31,6 +31,15 @@ export const usersAPI = createApi({
       },
       providesTags: ["Users"],
     }),
+    getOneUser: build.query<User, string>({
+      query: (id) => {
+        return {
+          url: `/users/${id}`,
+          method: "GET",
+        }
+      },
+      providesTags: ["Users"],
+    }),
     updateOneUser: build.mutation<User, User>({
       query: (user) => ({
         url: `/users/${user._id}`,
@@ -57,5 +66,11 @@ export const usersAPI = createApi({
   }),
 })
 
-export const { useGetAllUsersQuery, useUpdateOneUserMutation, useDeleteOneUserMutation, useUpdateManyUsersMutation } =
-  usersAPI
+export const {
+  usePrefetch,
+  useGetAllUsersQuery,
+  useGetOneUserQuery,
+  useUpdateOneUserMutation,
+  useDeleteOneUserMutation,
+  useUpdateManyUsersMutation,
+} = usersAPI

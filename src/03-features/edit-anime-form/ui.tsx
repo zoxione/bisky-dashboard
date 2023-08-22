@@ -62,8 +62,6 @@ export const EditAnimeForm = ({ animeInfo }: IEditAnimeFormProps) => {
   const onSubmit = async (values: z.infer<typeof editAnimeFormSchema>) => {
     setIsLoading(true)
 
-    console.log(values)
-
     // await updateAnimeInfo(values)
     //   .unwrap()
     //   .then((payload: any) => {

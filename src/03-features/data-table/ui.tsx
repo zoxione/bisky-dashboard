@@ -21,8 +21,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { Loader2 } from "lucide-react"
-import { ChangeEvent, memo, useCallback, useEffect, useState } from "react"
+import { Loader2, RotateCcwIcon, SaveAllIcon } from "lucide-react"
+import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useDebounce } from "usehooks-ts"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/01-shared/ui/table"
@@ -35,15 +35,14 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/01-shared/ui/select"
 import { Button } from "@/01-shared/ui/button"
 import { useToast } from "@/01-shared/ui/use-toast"
-import { Textarea } from "@/01-shared/ui/textarea"
 
-import { DetailsPopover } from "../details-popover"
+
+import { DefaultCell } from "./default-cell"
 
 export interface IEditDataFormProps<TDefaultData> {
   defaultData: TDefaultData
@@ -61,6 +60,8 @@ interface IDataTableProps<TData, TValue> {
       any
     >
   >
+  useQueryName: string
+  usePrefetch: any
   useUpdateManyMutation: UseMutation<
     MutationDefinition<
       any[],
@@ -86,11 +87,14 @@ export function DataTable<TData, TValue>({
   columns,
   filter = "",
   useQuery,
+  useQueryName,
+  usePrefetch,
   useUpdateManyMutation,
   editDataForm,
   useDeleteOneMutation,
 }: IDataTableProps<TData, TValue>) {
-  const [modifiedData, setModifiedData] = useState<TData[]>()
+  const [tableData, setTableData] = useState<TData[]>([])
+  const [modifiedData, setModifiedData] = useState<TData[]>([])
   const [pageIndex, setPageIndex] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -102,16 +106,17 @@ export function DataTable<TData, TValue>({
   const { toast } = useToast()
 
   const {
-    data: dataQuery = [],
+    data: queryData = [],
     isLoading,
     isFetching,
+    refetch: refetchQueryData,
   } = useQuery({
     page: pageIndex,
     limit: pageSize,
     search: searchFilterDebounced,
   })
-
   const [updateManyData, { isLoading: isLoadingUpdateManyMutation }] = useUpdateManyMutation()
+  const prefetchPage = usePrefetch(useQueryName)
 
   if (useDeleteOneMutation) {
     if (!columns.some((column) => column.id === "actions")) {
@@ -131,85 +136,18 @@ export function DataTable<TData, TValue>({
         header: ({ header }) => {
           return <div role="option" aria-selected />
         },
-        // size: 30,
         maxSize: 30,
       })
     }
   }
 
-  const defaultColumn: Partial<ColumnDef<TData>> = {
-    cell: memo(function Cell({ getValue, row, column, table }) {
-      const initialValue = getValue() ?? ""
-      const [value, setValue] = useState(initialValue)
-      const columnMeta = column.columnDef.meta
-      const tableMeta = table.options.meta
-
-      const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value)
-      }, [])
-
-      const handleSelectChange = useCallback((selectValue: string) => {
-        setValue(selectValue)
-      }, [])
-
-      const handleObjectChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        setValue((old: any) => ({
-          ...old,
-          [event.target.id]: event.target.value,
-        }))
-      }, [])
-
-      const handleTextAreaChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(event.target.value)
-      }, [])
-
-      useEffect(() => {
-        if (value !== initialValue) {
-          tableMeta?.updateData(row.index, column.id, value)
-        }
-      }, [value, initialValue])
-
-      if (columnMeta?.type === "select") {
-        return (
-          <Select value={value as string} onValueChange={handleSelectChange}>
-            <SelectTrigger className="">
-              <SelectValue placeholder="Select a value" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Values</SelectLabel>
-                {columnMeta?.options?.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        )
-      } else if (columnMeta?.type === "object") {
-        return <DetailsPopover title={column.id} value={value} onChangeValue={handleObjectChange} />
-      } else if (columnMeta?.type === "textarea") {
-        return <Textarea value={value as string} onChange={handleTextAreaChange} />
-      } else {
-        return (
-          <Input
-            type={columnMeta?.type || "text"}
-            className=""
-            disabled={columnMeta?.disabled}
-            value={(value as string) ?? ""}
-            onChange={handleInputChange}
-          />
-        )
-      }
-    }),
-    minSize: 220,
-  }
-
   const table = useReactTable({
-    data: dataQuery.data,
+    data: queryData.data,
     columns: columns,
-    defaultColumn: defaultColumn,
+    defaultColumn: {
+      cell: DefaultCell,
+      minSize: 220,
+    },
     initialState: {
       pagination: {
         pageIndex: 0,
@@ -228,9 +166,13 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
     meta: {
+      revertData: () => {
+        refetchQueryData()
+        setModifiedData([])
+      },
       updateData: (rowIndex: number, columnId: string, value: any) => {
         setModifiedData((old) => {
-          if (old) {
+          if (old.length !== 0) {
             return old.map((row, index) => {
               if (index === rowIndex) {
                 return {
@@ -257,8 +199,8 @@ export function DataTable<TData, TValue>({
   })
 
   const calcMaxPageIndex = useCallback(() => {
-    return Math.floor(dataQuery.stats.count / pageSize)
-  }, [dataQuery.stats?.count, pageSize])
+    return Math.floor(queryData.stats.count / pageSize)
+  }, [queryData.stats?.count, pageSize])
 
   const handleSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setSearchFilter(event.target.value)
@@ -305,8 +247,21 @@ export function DataTable<TData, TValue>({
             description: error.error,
           })
         })
+      setModifiedData([])
     }
   }
+
+  const handleRevertData = () => {
+    table.options.meta?.revertData()
+  }
+
+  useEffect(() => {
+    if (queryData.stats) {
+      if (pageIndex !== calcMaxPageIndex()) {
+        prefetchPage({ page: pageIndex + 1, limit: pageSize, search: searchFilterDebounced })
+      }
+    }
+  }, [calcMaxPageIndex, queryData, pageIndex, pageSize, prefetchPage, searchFilterDebounced])
 
   return (
     <div className="space-y-4">
@@ -328,7 +283,7 @@ export function DataTable<TData, TValue>({
           {isLoading ? (
             <Skeleton className="h-[24px] w-[80px] ml-2" />
           ) : (
-            <Badge variant="outline">{dataQuery.stats.count}</Badge>
+            <Badge variant="outline">{queryData.stats.count}</Badge>
           )}
         </span>
 
@@ -450,16 +405,31 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="grid grid-cols-6 justify-items-stretch">
-        <p className="font-mono text-sm font-semibold col-span-5">
+      <div className="grid grid-cols-1 md:grid-cols-5 justify-items-stretch ">
+        <p className="font-mono text-sm font-semibold col-span-4">
           Press <kbd>Shift</kbd> + <kbd>Scroll</kbd> to scroll the table horizontally.
         </p>
-        {modifiedData && (
-          <Button className="w-fit justify-self-end" onClick={handleSaveData} disabled={isLoadingUpdateManyMutation}>
+        <div className="flex flex-row items-center justify-end gap-2">
+          <Button
+            variant="secondary"
+            className="w-fit justify-self-end"
+            onClick={handleRevertData}
+            disabled={modifiedData.length === 0}
+          >
+            <RotateCcwIcon className="mr-2 h-4 w-4" />
+            Revert
+          </Button>
+          <Button
+            variant="default"
+            className="w-fit justify-self-end"
+            onClick={handleSaveData}
+            disabled={isLoadingUpdateManyMutation || modifiedData.length === 0}
+          >
             {isLoadingUpdateManyMutation && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <SaveAllIcon className="mr-2 h-4 w-4" />
             Save
           </Button>
-        )}
+        </div>
       </div>
     </div>
   )

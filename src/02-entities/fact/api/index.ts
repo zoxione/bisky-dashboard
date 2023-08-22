@@ -29,6 +29,7 @@ export const factsAPI = createApi({
           },
         }
       },
+      providesTags: ["Facts"],
     }),
     updateOneFact: build.mutation<Fact, Fact>({
       query: (fact) => ({
@@ -56,5 +57,10 @@ export const factsAPI = createApi({
   }),
 })
 
-export const { useGetAllFactsQuery, useUpdateOneFactMutation, useUpdateManyFactsMutation, useDeleteOneFactMutation } =
-  factsAPI
+export const {
+  usePrefetch,
+  useGetAllFactsQuery,
+  useUpdateOneFactMutation,
+  useUpdateManyFactsMutation,
+  useDeleteOneFactMutation,
+} = factsAPI

@@ -1,8 +1,10 @@
 "use client"
 
 import {
+  animeAPI,
   useDeleteOneAnimeInfoMutation,
   useGetAllAnimeInfoQuery,
+  usePrefetch,
   useUpdateManyAnimeInfoMutation,
 } from "@/02-entities/anime/api"
 import { DataTable } from "@/03-features/data-table"
@@ -14,6 +16,8 @@ export const AnimeTable = () => {
     <DataTable
       columns={columns}
       useQuery={useGetAllAnimeInfoQuery}
+      useQueryName={animeAPI.endpoints.getAllAnimeInfo.name}
+      usePrefetch={usePrefetch}
       useUpdateManyMutation={useUpdateManyAnimeInfoMutation}
       filter="labels"
       // editDataForm={EditUserForm}

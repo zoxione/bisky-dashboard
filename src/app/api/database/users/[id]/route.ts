@@ -35,7 +35,7 @@ export async function PUT(req: NextRequest, context: { params: any }) {
     .collection<DbUser>("Users")
     .findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $set: user })
 
-  return NextResponse.json(data)
+  return NextResponse.json(data.value)
 }
 
 export async function DELETE(req: NextRequest, context: { params: any }) {

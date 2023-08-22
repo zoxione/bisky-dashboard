@@ -2,8 +2,10 @@
 
 import { DataTable } from "@/03-features/data-table"
 import {
+  studiosAPI,
   useDeleteOneStudioMutation,
   useGetAllStudiosQuery,
+  usePrefetch,
   useUpdateManyStudiosMutation,
 } from "@/02-entities/studio/api"
 
@@ -14,6 +16,8 @@ export const StudiosTable = () => {
     <DataTable
       columns={columns}
       useQuery={useGetAllStudiosQuery}
+      useQueryName={studiosAPI.endpoints.getAllStudios.name}
+      usePrefetch={usePrefetch}
       useUpdateManyMutation={useUpdateManyStudiosMutation}
       filter=""
       // editDataForm={EditUserForm}
