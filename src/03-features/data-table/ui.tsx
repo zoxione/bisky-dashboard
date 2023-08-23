@@ -25,28 +25,15 @@ import { Loader2, RotateCcwIcon, SaveAllIcon } from "lucide-react"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useDebounce } from "usehooks-ts"
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/01-shared/ui/table"
-import { ActionsColumnTable } from "@/03-features/actions-column-table"
-import { Input } from "@/01-shared/ui/input"
-import { Skeleton } from "@/01-shared/ui/skeleton"
 import { Badge } from "@/01-shared/ui/badge"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/01-shared/ui/select"
 import { Button } from "@/01-shared/ui/button"
+import { Input } from "@/01-shared/ui/input"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/01-shared/ui/select"
+import { Skeleton } from "@/01-shared/ui/skeleton"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/01-shared/ui/table"
 import { useToast } from "@/01-shared/ui/use-toast"
 
-
 import { DefaultCell } from "./default-cell"
-
-export interface IEditDataFormProps<TDefaultData> {
-  defaultData: TDefaultData
-}
 
 interface IDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -60,8 +47,7 @@ interface IDataTableProps<TData, TValue> {
       any
     >
   >
-  useQueryName: string
-  usePrefetch: any
+  prefetchNextPage: (arg: { page: number; limit: number; search: string }) => void
   useUpdateManyMutation: UseMutation<
     MutationDefinition<
       any[],
@@ -71,29 +57,15 @@ interface IDataTableProps<TData, TValue> {
       any
     >
   >
-  editDataForm?: ({ defaultData }: IEditDataFormProps<TData>) => JSX.Element
-  useDeleteOneMutation?: UseMutation<
-    MutationDefinition<
-      any,
-      BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>,
-      any,
-      any,
-      any
-    >
-  >
 }
 
 export function DataTable<TData, TValue>({
   columns,
   filter = "",
   useQuery,
-  useQueryName,
-  usePrefetch,
+  prefetchNextPage,
   useUpdateManyMutation,
-  editDataForm,
-  useDeleteOneMutation,
 }: IDataTableProps<TData, TValue>) {
-  const [tableData, setTableData] = useState<TData[]>([])
   const [modifiedData, setModifiedData] = useState<TData[]>([])
   const [pageIndex, setPageIndex] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
@@ -105,6 +77,7 @@ export function DataTable<TData, TValue>({
 
   const { toast } = useToast()
 
+  // API methods
   const {
     data: queryData = [],
     isLoading,
@@ -116,31 +89,8 @@ export function DataTable<TData, TValue>({
     search: searchFilterDebounced,
   })
   const [updateManyData, { isLoading: isLoadingUpdateManyMutation }] = useUpdateManyMutation()
-  const prefetchPage = usePrefetch(useQueryName)
 
-  if (useDeleteOneMutation) {
-    if (!columns.some((column) => column.id === "actions")) {
-      columns.push({
-        id: "actions",
-        cell: ({ row }) => {
-          const rowData = row.original as any
-          return (
-            <ActionsColumnTable
-              data={rowData}
-              useDeleteMutation={useDeleteOneMutation}
-              editDataForm={editDataForm && editDataForm({ defaultData: rowData })}
-              link={typeof rowData["kind"] !== "undefined" ? `https://dev.bisky.one/anime/${rowData.id}` : undefined}
-            />
-          )
-        },
-        header: ({ header }) => {
-          return <div role="option" aria-selected />
-        },
-        maxSize: 30,
-      })
-    }
-  }
-
+  // Table
   const table = useReactTable({
     data: queryData.data,
     columns: columns,
@@ -255,13 +205,14 @@ export function DataTable<TData, TValue>({
     table.options.meta?.revertData()
   }
 
+  // Prefetch one next page
   useEffect(() => {
     if (queryData.stats) {
       if (pageIndex !== calcMaxPageIndex()) {
-        prefetchPage({ page: pageIndex + 1, limit: pageSize, search: searchFilterDebounced })
+        prefetchNextPage({ page: pageIndex + 1, limit: pageSize, search: searchFilterDebounced })
       }
     }
-  }, [calcMaxPageIndex, queryData, pageIndex, pageSize, prefetchPage, searchFilterDebounced])
+  }, [calcMaxPageIndex, queryData, pageIndex, pageSize, searchFilterDebounced, prefetchNextPage])
 
   return (
     <div className="space-y-4">

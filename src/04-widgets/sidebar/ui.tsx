@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 
 import { cn } from "@/01-shared/libs/shadcn"
 import { Button } from "@/01-shared/ui/button"
@@ -31,7 +32,9 @@ export const Sidebar = ({ className }: ISidebarProps) => {
       <div className="flex flex-col items-center gap-4 px-3 py-6">
         <div className="flex flex-col items-center justify-center gap-2">
           <Avatar className="w-[120px] h-[120px]">
-            <AvatarImage src={session?.user.image ?? ""} alt={initials} />
+            <AvatarImage src={session?.user.image ?? ""} alt={initials} asChild>
+              <Image src={session?.user.image ?? ""} fill alt={initials} quality={100} />
+            </AvatarImage>
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
           <span className="text-lg font-semibold">{session?.user.username}</span>

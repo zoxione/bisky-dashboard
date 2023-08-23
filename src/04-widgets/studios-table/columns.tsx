@@ -1,13 +1,16 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 
 import { Studio } from "@/02-entities/studio/models/studio"
 import { SortButton } from "@/03-features/sort-button"
+import { ActionsColumnTable } from "@/03-features/actions-column-table"
+import { useDeleteOneStudioMutation } from "@/02-entities/studio/api"
 
-export const columns: ColumnDef<Studio>[] = [
-  {
-    accessorKey: "_id",
+const columnHelper = createColumnHelper<Studio>()
+
+export const columns = [
+  columnHelper.accessor("_id", {
     meta: {
       type: "text",
       disabled: true,
@@ -15,9 +18,8 @@ export const columns: ColumnDef<Studio>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="_id" />
     },
-  },
-  {
-    accessorKey: "id",
+  }),
+  columnHelper.accessor("id", {
     meta: {
       type: "number",
       disabled: true,
@@ -25,23 +27,32 @@ export const columns: ColumnDef<Studio>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="id" />
     },
-  },
-  {
-    accessorKey: "name",
+  }),
+  columnHelper.accessor("name", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="name" />
     },
-  },
-  {
-    accessorKey: "img",
+  }),
+  columnHelper.accessor("img", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="img" />
     },
-  },
-]
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: ({ row }) => {
+      const rowData = row.original as any
+      return <ActionsColumnTable data={rowData} useDeleteMutation={useDeleteOneStudioMutation} />
+    },
+    header: ({ header }) => {
+      return <div role="option" aria-selected />
+    },
+    maxSize: 30,
+  }),
+] as ColumnDef<Studio, unknown>[]

@@ -1,16 +1,20 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { ExternalLinkIcon } from "lucide-react"
 import Link from "next/link"
 
 import { Badge } from "@/01-shared/ui/badge"
 import { User } from "@/02-entities/user/models/user"
 import { SortButton } from "@/03-features/sort-button"
+import { ActionsColumnTable } from "@/03-features/actions-column-table"
+import { useDeleteOneUserMutation } from "@/02-entities/user/api"
 
-export const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "profile",
+const columnHelper = createColumnHelper<User>()
+
+export const columns = [
+  columnHelper.display({
+    id: "profile",
     meta: {
       type: "profile",
     },
@@ -26,9 +30,8 @@ export const columns: ColumnDef<User>[] = [
         </Link>
       )
     },
-  },
-  {
-    accessorKey: "_id",
+  }),
+  columnHelper.accessor("_id", {
     meta: {
       type: "text",
       disabled: true,
@@ -36,45 +39,40 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="_id" />
     },
-  },
-  {
-    accessorKey: "username",
+  }),
+  columnHelper.accessor("username", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="username" />
     },
-  },
-  {
-    accessorKey: "password",
+  }),
+  columnHelper.accessor("password", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="password" />
     },
-  },
-  {
-    accessorKey: "email",
+  }),
+  columnHelper.accessor("email", {
     meta: {
       type: "email",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="email" />
     },
-  },
-  {
-    accessorKey: "image",
+  }),
+  columnHelper.accessor("image", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="image" />
     },
-  },
-  {
-    accessorKey: "role",
+  }),
+  columnHelper.accessor("role", {
     meta: {
       type: "select",
       options: [
@@ -86,23 +84,32 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="role" />
     },
-  },
-  {
-    accessorKey: "name",
+  }),
+  columnHelper.accessor("name", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="name" />
     },
-  },
-  {
-    accessorKey: "refreshToken",
+  }),
+  columnHelper.accessor("refreshToken", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="refreshToken" />
     },
-  },
-]
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: ({ row }) => {
+      const rowData = row.original as any
+      return <ActionsColumnTable data={rowData} useDeleteMutation={useDeleteOneUserMutation} />
+    },
+    header: ({ header }) => {
+      return <div role="option" aria-selected />
+    },
+    maxSize: 30,
+  }),
+] as ColumnDef<User, unknown>[]

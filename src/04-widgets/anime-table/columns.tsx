@@ -1,13 +1,16 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 
 import { AnimeInfo } from "@/02-entities/anime/models/anime-info"
 import { SortButton } from "@/03-features/sort-button"
+import { useDeleteOneAnimeInfoMutation } from "@/02-entities/anime/api"
+import { ActionsColumnTable } from "@/03-features/actions-column-table"
 
-export const columns: ColumnDef<AnimeInfo>[] = [
-  {
-    accessorKey: "_id",
+const columnHelper = createColumnHelper<AnimeInfo>()
+
+export const columns = [
+  columnHelper.accessor("_id", {
     meta: {
       type: "text",
       disabled: true,
@@ -15,9 +18,8 @@ export const columns: ColumnDef<AnimeInfo>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="_id" />
     },
-  },
-  {
-    accessorKey: "id",
+  }),
+  columnHelper.accessor("id", {
     meta: {
       type: "text",
       disabled: true,
@@ -25,27 +27,24 @@ export const columns: ColumnDef<AnimeInfo>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="id" />
     },
-  },
-  {
-    accessorKey: "labels",
+  }),
+  columnHelper.accessor("labels", {
     meta: {
       type: "object",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="labels" />
     },
-  },
-  {
-    accessorKey: "poster",
+  }),
+  columnHelper.accessor("poster", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="poster" />
     },
-  },
-  {
-    accessorKey: "kind",
+  }),
+  columnHelper.accessor("kind", {
     meta: {
       type: "select",
       options: [
@@ -60,27 +59,24 @@ export const columns: ColumnDef<AnimeInfo>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="kind" />
     },
-  },
-  {
-    accessorKey: "scores",
+  }),
+  columnHelper.accessor("scores", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="scores" />
     },
-  },
-  {
-    accessorKey: "anotherScores",
+  }),
+  columnHelper.accessor("anotherScores", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="anotherScores" />
     },
-  },
-  {
-    accessorKey: "status",
+  }),
+  columnHelper.accessor("status", {
     meta: {
       type: "select",
       options: [
@@ -92,27 +88,24 @@ export const columns: ColumnDef<AnimeInfo>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="Status" />
     },
-  },
-  {
-    accessorKey: "episodes",
+  }),
+  columnHelper.accessor("episodes", {
     meta: {
       type: "object",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="episodes" />
     },
-  },
-  {
-    accessorKey: "dates",
+  }),
+  columnHelper.accessor("dates", {
     meta: {
       type: "object",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="dates" />
     },
-  },
-  {
-    accessorKey: "rating",
+  }),
+  columnHelper.accessor("rating", {
     meta: {
       type: "select",
       options: [
@@ -128,9 +121,8 @@ export const columns: ColumnDef<AnimeInfo>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="rating" />
     },
-  },
-  {
-    accessorKey: "description",
+  }),
+  columnHelper.accessor("description", {
     meta: {
       type: "textarea",
     },
@@ -138,59 +130,70 @@ export const columns: ColumnDef<AnimeInfo>[] = [
       return <SortButton column={column} label="description" />
     },
     minSize: 360,
-  },
-  {
-    accessorKey: "screenshots",
+  }),
+  columnHelper.accessor("screenshots", {
     meta: {
       type: "object",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="screenshots" />
     },
-  },
-  {
-    accessorKey: "videos",
+  }),
+  columnHelper.accessor("videos", {
     meta: {
       type: "object",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="videos" />
     },
-  },
-  {
-    accessorKey: "genres",
+  }),
+  columnHelper.accessor("genres", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="genres" />
     },
-  },
-  {
-    accessorKey: "studios",
+  }),
+  columnHelper.accessor("studios", {
     meta: {
       type: "text",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="studios" />
     },
-  },
-  {
-    accessorKey: "franchise",
+  }),
+  columnHelper.accessor("franchise", {
     meta: {
       type: "object",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="franchise" />
     },
-  },
-  {
-    accessorKey: "updateDate",
+  }),
+  columnHelper.accessor("updateDate", {
     meta: {
-      type: "text",
+      type: "date",
     },
     header: ({ column }) => {
       return <SortButton column={column} label="updateDate" />
     },
-  },
-]
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: ({ row }) => {
+      const rowData = row.original as any
+      return (
+        <ActionsColumnTable
+          data={rowData}
+          useDeleteMutation={useDeleteOneAnimeInfoMutation}
+          link={`https://dev.bisky.one/anime/${rowData.id}`}
+        />
+      )
+    },
+    header: ({ header }) => {
+      return <div role="option" aria-selected />
+    },
+    maxSize: 30,
+  }),
+] as ColumnDef<AnimeInfo, unknown>[]

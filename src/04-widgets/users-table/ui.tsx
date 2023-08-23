@@ -1,13 +1,6 @@
 "use client"
 
-import {
-  useDeleteOneUserMutation,
-  useGetAllUsersQuery,
-  usePrefetch,
-  useUpdateManyUsersMutation,
-  usersAPI,
-} from "@/02-entities/user/api"
-import { EditUserForm } from "@/03-features/edit-user-form"
+import { useGetAllUsersQuery, usePrefetch, useUpdateManyUsersMutation } from "@/02-entities/user/api"
 import { DataTable } from "@/03-features/data-table"
 
 import { columns } from "./columns"
@@ -17,12 +10,9 @@ export const UsersTable = () => {
     <DataTable
       columns={columns}
       useQuery={useGetAllUsersQuery}
-      useQueryName={usersAPI.endpoints.getAllUsers.name}
-      usePrefetch={usePrefetch}
+      prefetchNextPage={usePrefetch("getAllUsers")}
       useUpdateManyMutation={useUpdateManyUsersMutation}
       filter=""
-      editDataForm={EditUserForm}
-      useDeleteOneMutation={useDeleteOneUserMutation}
     />
   )
 }

@@ -48,7 +48,9 @@ export const Header = () => {
             <MenubarMenu>
               <MenubarTrigger className="gap-2">
                 <Avatar className="h-5 w-5">
-                  <AvatarImage src={session?.user?.image ?? ""} alt={initials} />
+                  <AvatarImage src={session?.user?.image ?? ""} alt={initials} asChild>
+                    <Image src={session?.user?.image ?? ""} fill alt={initials} />
+                  </AvatarImage>
                   <AvatarFallback className="text-[9px]">{initials}</AvatarFallback>
                 </Avatar>
                 {status === "loading" ? (

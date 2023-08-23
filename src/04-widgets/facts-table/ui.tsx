@@ -2,8 +2,6 @@
 
 import { DataTable } from "@/03-features/data-table"
 import {
-  factsAPI,
-  useDeleteOneFactMutation,
   useGetAllFactsQuery,
   usePrefetch,
   useUpdateManyFactsMutation,
@@ -16,12 +14,9 @@ export const FactsTable = () => {
     <DataTable
       columns={columns}
       useQuery={useGetAllFactsQuery}
-      useQueryName={factsAPI.endpoints.getAllFacts.name}
-      usePrefetch={usePrefetch}
+      prefetchNextPage={usePrefetch("getAllFacts")}
       useUpdateManyMutation={useUpdateManyFactsMutation}
       filter=""
-      // editDataForm={EditUserForm}
-      useDeleteOneMutation={useDeleteOneFactMutation}
     />
   )
 }

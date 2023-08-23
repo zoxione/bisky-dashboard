@@ -25,6 +25,10 @@ interface IUserModalProps {
 export const UserModal = ({ user }: IUserModalProps) => {
   const router = useRouter()
 
+  const onOpen = useCallback(() => {
+    window.location.reload()
+  }, [])
+
   const onDismiss = useCallback(() => {
     router.back()
   }, [router])
@@ -80,6 +84,9 @@ export const UserModal = ({ user }: IUserModalProps) => {
         <DialogFooter>
           <Button onClick={onDismiss} variant="outline">
             Close
+          </Button>
+          <Button onClick={onOpen} variant="default">
+            Open
           </Button>
         </DialogFooter>
       </DialogContent>

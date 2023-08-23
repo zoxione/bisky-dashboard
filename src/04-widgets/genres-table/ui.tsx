@@ -2,8 +2,6 @@
 
 import { DataTable } from "@/03-features/data-table"
 import {
-  genresAPI,
-  useDeleteOneGenreMutation,
   useGetAllGenresQuery,
   usePrefetch,
   useUpdateManyGenresMutation,
@@ -16,12 +14,9 @@ export const GenresTable = () => {
     <DataTable
       columns={columns}
       useQuery={useGetAllGenresQuery}
-      useQueryName={genresAPI.endpoints.getAllGenres.name}
-      usePrefetch={usePrefetch}
+      prefetchNextPage={usePrefetch("getAllGenres")}
       useUpdateManyMutation={useUpdateManyGenresMutation}
       filter=""
-      // editDataForm={EditUserForm}
-      useDeleteOneMutation={useDeleteOneGenreMutation}
     />
   )
 }

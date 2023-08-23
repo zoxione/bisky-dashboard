@@ -1,13 +1,16 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 
 import { Fact } from "@/02-entities/fact/models/fact"
 import { SortButton } from "@/03-features/sort-button"
+import { useDeleteOneFactMutation } from "@/02-entities/fact/api"
+import { ActionsColumnTable } from "@/03-features/actions-column-table"
 
-export const columns: ColumnDef<Fact>[] = [
-  {
-    accessorKey: "_id",
+const columnHelper = createColumnHelper<Fact>()
+
+export const columns = [
+  columnHelper.accessor("_id", {
     meta: {
       type: "text",
       disabled: true,
@@ -15,9 +18,8 @@ export const columns: ColumnDef<Fact>[] = [
     header: ({ column }) => {
       return <SortButton column={column} label="_id" />
     },
-  },
-  {
-    accessorKey: "fact",
+  }),
+  columnHelper.accessor("fact", {
     meta: {
       type: "textarea",
     },
@@ -25,5 +27,16 @@ export const columns: ColumnDef<Fact>[] = [
       return <SortButton column={column} label="fact" />
     },
     minSize: 360,
-  },
-]
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: ({ row }) => {
+      const rowData = row.original as any
+      return <ActionsColumnTable data={rowData} useDeleteMutation={useDeleteOneFactMutation} />
+    },
+    header: ({ header }) => {
+      return <div role="option" aria-selected />
+    },
+    maxSize: 30,
+  }),
+] as ColumnDef<Fact, unknown>[]
